@@ -4,6 +4,10 @@
 
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+const router = require("./routes");
 
 // Global app object
 const app = express();
@@ -15,10 +19,13 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+mongoose.connect(
+    process.env.MONGO_URI,
+    { useUnifiedTopology: true, useNewUrlParser: true }
+);
 
-app.get("/", function(req, res) {
-    res.send("Welcome to Adoptapet API");
-});
+app.use(router);
+
 
 // Bootstrap server
 const server = app.listen(process.env.PORT || 3000, function () {
